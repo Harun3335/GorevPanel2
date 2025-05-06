@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>Görevler</h2>
+
+<a class="btn btn-primary mb-3" href="{% url 'task_create' %}">Yeni Görev Ekle</a>
+
+<ul class="list-group">
+    {% for task in tasks %}
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+
+            <!-- Görev başlığı ve durum rozetleri -->
+            <div class="d-flex align-items-center">
+                <a href="{% url 'task_detail' task.pk %}">{{ task.title }}</a>
+
+                {% if task.completed %}
+                    <span class="badge bg-success ms-3">Tamamlandı</span>
+                {% elif task.due_date and task.due_date < now %}
+                    <span class="badge bg-danger ms-3">Geç Kaldınız</span>
+                {% else %}
+                    <span class="badge bg-secondary ms-3">Devam Ediyor</span>
+                {% endif %}
+            </div>
+
+            <!-- Tamamla / Tamamlanmadı yap butonu -->
+            <div>
+                <form action="{% url 'task_toggle' task.pk %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button class="btn btn-sm {% if task.completed %}btn-success{% else %}btn-warning{% endif %}" type="submit">
+                        {% if task.completed %}Tamamlanmadı Yap{% else %}Tamamlandı Yap{% endif %}
+                    </button>
+                </form>
+            </div>
+
+        </li>
+    {% empty %}
+        <li class="list-group-item">Henüz görev yok.</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}
+
+
+

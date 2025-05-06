@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="card">
+    <div class="card-header bg-primary text-white">
+        <h4>Görev Ekle / Düzenle</h4>
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type="submit">Kaydet</button>
+            <a class="btn btn-secondary" href="{% url 'task_list' %}">Geri Dön</a>
+        </form>
+    </div>
+</div>
+
+{% endblock %}

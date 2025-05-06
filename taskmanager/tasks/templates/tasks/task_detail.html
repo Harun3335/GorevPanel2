@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h2>{{ object.title }}</h2>
+
+<p>{{ object.description }}</p>
+<p>Son Tarih: {{ object.due_date }}</p>
+<p>Durum: {% if object.completed %}<span class="badge bg-success">Tamamlandı</span>{% else %}<span class="badge bg-warning">Devam Ediyor</span>{% endif %}</p>
+
+<a class="btn btn-secondary" href="{% url 'task_update' object.pk %}">Düzenle</a>
+<a class="btn btn-danger" href="{% url 'task_delete' object.pk %}">Sil</a>
+<a class="btn btn-outline-primary" href="{% url 'task_list' %}">Geri Dön</a>
+
+<!-- YENİ: Tamamlandı durumunu değiştir -->
+<form action="{% url 'task_toggle' object.pk %}" method="post" style="display:inline;">
+    {% csrf_token %}
+    <button class="btn btn-warning" type="submit">
+        {% if object.completed %}Tamamlanmadı Yap{% else %}Tamamlandı Yap{% endif %}
+    </button>
+</form>
+
+{% endblock %}
